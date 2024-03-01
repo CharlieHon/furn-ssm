@@ -1,0 +1,75 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <!--1. Spring配置文件位置-->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+  <!--
+  1) ContextLoaderListener监听器作用是启动Web容器时，自动装配ApplicationContext的配置信息
+  2) 它实现了ServletContextListener接口，在web.xml配置该监听器，启动容器时，会默认执行它实现的方法
+      public static final String CONFIG_LOCATION_PARAM = "contextConfigLocation"; // ContextLoader
+  -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+
+  <!--2. SpringMVC的前端控制器，拦截所有请求
+  1) springmvc中央控制器，负责处理所有的应用请求
+  2) 如果没有指定springmvc的配置文件，就默认为 (servlet-name)-servlet.xml；如果指定，则以指定为准
+  -->
+  <servlet>
+    <servlet-name>springDispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>springDispatcherServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+
+  <!--3. 字符编码过滤器，一定要放在所有过滤器的最前面
+  1) 如果 forceRequestEncoding 设置为true，执行 request.setCharacterEncoding(encoding);
+  2) 如果 forceResponseEncoding 设置为true，执行 response.setCharacterEncoding(encoding);
+  -->
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceRequestEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceResponseEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
+  <!--4. 配置HiddenHttpMethodFilter
+  1) 使用Rest风格的URI，可以把页面发过来的post请求转为指定的delete或者put请求
+  2) 配置url-pattern是 /* 表示请求都经过 hiddenHttpMethodFilter过滤
+  -->
+  <filter>
+    <filter-name>HiddenHttpMethodsFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>HiddenHttpMethodsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+</web-app>
