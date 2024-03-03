@@ -1,5 +1,7 @@
 package com.charlie.furn.bean;
 
+import org.springframework.util.StringUtils;
+
 import java.math.BigDecimal;
 
 public class Furn {
@@ -15,7 +17,8 @@ public class Furn {
 
     private Integer stock;
 
-    private String imgPath;
+    // 当创建Furn对象 imgPath 为null时，imgPath给默认值(默认图片路径)
+    private String imgPath = "assets/images/product-image/1.jpg";
 
     public Furn() {}
 
@@ -26,7 +29,18 @@ public class Furn {
         this.price = price;
         this.sales = sales;
         this.stock = stock;
-        this.imgPath = imgPath;
+        // 如果imgPath不为null，而且是有数据的，就设置 this.imgPath，否则就使用默认值
+        // imgPath != null && !imgPath.equals("") => 使用一个工具类的方法完成
+        /**
+         *     public static boolean hasText(@Nullable String str) {
+         *         return str != null && !str.isEmpty() && containsText(str);
+         *     }
+         *     1. StringUtils.hasText(imgPath)就是要求imgPath不是null，而且不是""，而且不是"    "(全部空格)
+         *     2. 该方法以后会经常使用
+         */
+        if (StringUtils.hasText(imgPath)) {
+            this.imgPath = imgPath;
+        }
     }
 
     @Override

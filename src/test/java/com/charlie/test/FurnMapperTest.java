@@ -1,4 +1,4 @@
-package com.charlie.furn.test;
+package com.charlie.test;
 
 import com.charlie.furn.bean.Furn;
 import com.charlie.furn.dao.FurnMapper;

@@ -173,3 +173,10 @@ public class FurnMapperTest {
    1) insertSelective选择性保存数据
    2) ![img_2.png](img_2.png)
    3) 而insert则是不论设置多少个字段，统一都要添加，即使该字段值为null。这样可能导致报错，因为数据库中设置了 `not null`
+
+## 01-搭建Vue前端工程
+
+### Vue3项目结构介绍
+
+
+

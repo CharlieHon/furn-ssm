@@ -1,4 +1,4 @@
-package com.charlie.furn.test;
+package com.charlie.test;
 
 import org.junit.Test;
 import org.mybatis.generator.api.MyBatisGenerator;

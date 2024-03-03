@@ -9,7 +9,7 @@
     - context:include-filter：配置说明只是扫描控制器
     -->
     <context:component-scan base-package="com.charlie.furn" use-default-filters="false">
-        <!--SpringMVC只扫描controller-->
+        <!--SpringMVC只扫描com.charlie.furn 包中带有 @Controller 注解的类-->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 

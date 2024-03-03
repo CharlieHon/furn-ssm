@@ -5,7 +5,10 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
     <!--spring配置文件：主要配置和业务相关的，比如数据源，事务控制等-->
-    <context:component-scan base-package="com.charlie.furn" use-default-filters="false">
+    <context:component-scan base-package="com.charlie.furn">
+        <!--use-default-filters="true" 指的是使用默认过滤器扫描 @Component @Service @Controller 等注解配置的Bean
+        如果设置为false，则Spring将不会自动包含默认的组件注解。这种情况下，就必须手动添加想要被Spring扫描的组件类型
+        -->
         <!--扫描com.charlie.furn包，不扫描controller，因为以及在springmvc配置-->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
