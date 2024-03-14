@@ -9,7 +9,7 @@
         <!--use-default-filters="true" 指的是使用默认过滤器扫描 @Component @Service @Controller 等注解配置的Bean
         如果设置为false，则Spring将不会自动包含默认的组件注解。这种情况下，就必须手动添加想要被Spring扫描的组件类型
         -->
-        <!--扫描com.charlie.furn包，不扫描controller，因为以及在springmvc配置-->
+        <!--扫描com.charlie.furn包，不扫描controller，因为已经在springmvc配置-->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
@@ -62,6 +62,7 @@
     <!--配置启用基于注解的声明式事务管理器，这里使用xml配置+切入表达式-->
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <aop:config>
+        <!--execution(* com.charlie.furn.service..*(..))表示对 com.charlie.furn.service包下所有类的所有方法控制事务-->
         <aop:pointcut id="txPoint" expression="execution(* com.charlie.furn.service..*(..))"/>
         <!--配置事务增强：使用txAdvice，指定规则对txPoint进行切入-->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>

@@ -174,9 +174,163 @@ public class FurnMapperTest {
    2) ![img_2.png](img_2.png)
    3) 而insert则是不论设置多少个字段，统一都要添加，即使该字段值为null。这样可能导致报错，因为数据库中设置了 `not null`
 
-## 01-搭建Vue前端工程
+## 1-Vue搭建前端页面
 
-### Vue3项目结构介绍
+- ![前端页面布局](img_3.png)
 
+## 2-添加家具信息
 
+1. 完成后台代码从dao->service->controller，并对每层代码进行测试，到controller曾，使用Postman发送http的post请求完成测试
+2. 完成前端代码，使用axios发送ajax(json数据)给后台，实现添加家具家具信息
 
+```java
+package com.charlie.furn.bean;
+
+import org.springframework.util.StringUtils;
+import java.math.BigDecimal;
+
+public class Furn {
+    private Integer id;
+    private String name;
+    private String maker;
+    private BigDecimal price;
+    private Integer sales;
+    private Integer stock;
+
+    // 当创建Furn对象 imgPath 为null时，imgPath给默认值(默认图片路径)
+    private String imgPath = "assets/images/product-image/1.jpg";
+
+    public Furn() {}
+
+    public Furn(Integer id, String name, String maker, BigDecimal price, Integer sales, Integer stock, String imgPath) {
+        this.id = id;
+        this.name = name;
+        this.maker = maker;
+        this.price = price;
+        this.sales = sales;
+        this.stock = stock;
+        // 如果imgPath不为null，而且是有数据的，就设置 this.imgPath，否则就使用默认值
+        // imgPath != null && !imgPath.equals("") => 使用一个工具类的方法完成
+        /**
+         *     public static boolean hasText(@Nullable String str) {
+         *         return str != null && !str.isEmpty() && containsText(str);
+         *     }
+         *     1. StringUtils.hasText(imgPath)就是要求imgPath不是null，而且不是""，而且不是"    "(全部空格)
+         *     2. 该方法以后会经常使用
+         */
+        if (StringUtils.hasText(imgPath)) {
+            this.imgPath = imgPath;
+        }
+    }
+}
+```
+
+```java
+package com.charlie.furn.bean;
+
+/**
+ * Msg：后端程序返回给前端的json数据的Msg对象 => 本质就是数据规则
+ */
+public class Msg {
+    // 状态码:200-成功，400-失败
+    private int code;
+    // 信息-说明
+    private String msg;
+    // 返回给客户端/浏览器的数据-Map集合
+    private Map<String, Object> extend = new HashMap<>();
+
+    // 编写几个常用的方法-封装好msg
+    // 返回success对应的msg
+    public static Msg success() {
+        Msg msg = new Msg();
+        msg.setCode(200);
+        msg.setMsg("success");
+        return msg;
+    }
+
+    // 返回fail对应的msg
+    public static Msg fail() {
+        Msg msg = new Msg();
+        msg.setCode(400);
+        msg.setMsg("fail");
+        return msg;
+    }
+
+    // 给返回的msg设置数据
+    public Msg add(String key, Object value) {
+        extend.put(key, value);
+        return this;
+    }
+}
+```
+
+```java
+package com.charlie.furn.service.impl;
+
+import com.charlie.furn.bean.Furn;
+import com.charlie.furn.dao.FurnMapper;
+import com.charlie.furn.service.FurnService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+@Service
+public class FurnServiceImpl implements FurnService {
+
+    // 注入/装配FurnMapper接口对象(代理对象)
+    @Resource
+    private FurnMapper furnMapper;
+
+    @Override
+    public void save(Furn furn) {
+        // 1. 这里使用 insertSelective
+        // 2. 因为furn表的id是自增长，就使用 insertSelective
+        furnMapper.insertSelective(furn);
+    }
+}
+```
+
+```java
+package com.charlie.furn.controller;
+
+import com.charlie.furn.bean.Furn;
+import com.charlie.furn.bean.Msg;
+import com.charlie.furn.service.FurnService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+
+@Controller
+public class FurnController {
+
+    // 注入/配置FurnService
+    @Resource
+    private FurnService furnService;
+
+    /**
+     * 响应客户端的添加请求
+     * 1. 响应客户端的添加请求
+     * 2. @RequestBody：使用SpringMVC的注解将客户端提交的json数据封装成Furn对象
+     * 3. @ResponseBody：返回json格式数据，底层是按照http协议进行协商的
+     */
+    @PostMapping("/save")
+    @ResponseBody
+    public Msg save(@RequestBody Furn furn) {
+        furnService.save(furn);
+        // 返回成功信息
+        Msg success = Msg.success();
+        return success;
+    }
+}
+```
+
+> 因为前台发送的是json数据，被服务器接收到后，转成javabean数据，因此 `pomx.xml`需要引入 `jackson`，处理json数据
+
+### 添加家具注意事项
+
+1. Postman测试时，要指定 `content-Type`，否则会报错 415。不支持该请求格式
+2. 需要通过注解 `@RequestBody`将提交的json数据封装到对应的Javabean，否则会报错500
+3. 需要通过注解 `@ResponseBody` 表示返回json数据，否则会以为返回view字符串，找不到，进而报错404

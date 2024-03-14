@@ -20,12 +20,13 @@ public class FurnServiceTest {
         ioc = new ClassPathXmlApplicationContext("applicationContext.xml");
         // 说明：通过 FurnService.class 类型获取 FurnService接口对象/代理对象
         furnService = ioc.getBean(FurnService.class);
+        // furnService=class com.sun.proxy.$Proxy22
         System.out.println("furnService=" + furnService.getClass());
     }
 
     @Test
-    public void t1() {
-        Furn furn = new Furn(null, "4K27寸显示器", "飞利浦", new BigDecimal("2560.5"), 560, 140, "assets/images/product-image/9.jpg");
+    public void save() {
+        Furn furn = new Furn(null, "郁金香盆栽", "青植", new BigDecimal("26.5"), 1236, 64, "assets/images/product-image/9.jpg");
         furnService.save(furn);
         System.out.println("OK!");
     }

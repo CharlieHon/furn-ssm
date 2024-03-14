@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
+    <!--MyBatis Generator配置文件-->
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <!--生成没有注释的bean-->
         <commentGenerator>

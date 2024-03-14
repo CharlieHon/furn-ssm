@@ -21,7 +21,7 @@ public class FurnController {
      * 响应客户端的添加请求
      * 1. 响应客户端的添加请求
      * 2. @RequestBody：使用SpringMVC的注解将客户端提交的json数据封装成Furn对象
-     * 3. @responseBody：返回json格式数据，底层时按照http协议进行协商的
+     * 3. @ResponseBody：返回json格式数据，底层是按照http协议进行协商的
      */
     @PostMapping("/save")
     @ResponseBody
