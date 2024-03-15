@@ -80,6 +80,18 @@
       <artifactId>jackson-databind</artifactId>
       <version>2.12.4</version>
     </dependency>
+    <!--引入Mybatis pageHelper插件-->
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper</artifactId>
+      <version>5.2.1</version>
+    </dependency>
+    <!--引入JSR303数据校验并支持引入hibernate-validator-->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.1.0.Final</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>furn-ssm</finalName>

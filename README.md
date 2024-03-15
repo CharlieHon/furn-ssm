@@ -334,3 +334,11 @@ public class FurnController {
 1. Postman测试时，要指定 `content-Type`，否则会报错 415。不支持该请求格式
 2. 需要通过注解 `@RequestBody`将提交的json数据封装到对应的Javabean，否则会报错500
 3. 需要通过注解 `@ResponseBody` 表示返回json数据，否则会以为返回view字符串，找不到，进而报错404
+
+
+## 后端数据校验
+
+> 虽然在前端设置了校验，但是当请求不通过前端(如通过postman发送请求)，则非法数据仍然会达到后端，因此还需要在后端对数据进行校验
+
+
+

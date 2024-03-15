@@ -13,4 +13,18 @@
     <typeAliases>
         <package name="com.charlie.furn.bean"/>
     </typeAliases>
+
+    <!--
+    1. plugins标签需要放在 typeAliases 标签后面，这是 doctype 约束的
+    2. 配置分页拦截器
+    -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!--配置分页合理化
+            1. 如果用户请求的pageNum > pages，就显示查询最后一页
+            2. 如果用户请求的pageNum < 0，就显示查询结果的第一页
+            `/api/del/{id}`-->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
 </configuration>
